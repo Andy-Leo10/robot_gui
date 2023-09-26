@@ -13,11 +13,8 @@ find_package(catkin REQUIRED COMPONENTS
   robotinfo_msgs
   roscpp
   std_srvs
-  std_msgs
-  cv_bridge
-  image_transport
 )
-find_package(OpenCV 4 REQUIRED)
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -108,9 +105,9 @@ find_package(OpenCV 4 REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- INCLUDE_DIRS include
- LIBRARIES robot_gui
- CATKIN_DEPENDS geometry_msgs nav_msgs robotinfo_msgs roscpp std_srvs std_msgs cv_bridge image_transport
+#  INCLUDE_DIRS include
+#  LIBRARIES robot_gui
+#  CATKIN_DEPENDS geometry_msgs nav_msgs robotinfo_msgs roscpp std_srvs
 #  DEPENDS system_lib
 )
 
@@ -121,9 +118,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
+# include
   ${catkin_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -155,10 +151,7 @@ include_directories(
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-add_executable(robot_gui_node
-  src/robot_gui_main.cpp
-  src/robot_gui_class.cpp)
-target_link_libraries(robot_gui_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${PROJECT_NAME})
+
 #############
 ## Install ##
 #############
