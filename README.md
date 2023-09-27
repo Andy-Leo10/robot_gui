@@ -12,7 +12,7 @@ The GUI has 4 sections that are:
 3. Tracking the current position of the robot
 4. Request the travelled distance
 
-![](robot_gui/proposed_layout/gui_example.png)
+![imagen](https://github.com/Andy-Leo10/robot_gui/assets/60716487/e394b311-2260-4060-aba7-e0e40038f2f3)
 
 ## Usage
 
