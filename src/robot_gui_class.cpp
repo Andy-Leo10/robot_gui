@@ -1,22 +1,32 @@
 #include "robot_gui/robot_gui_class.h"
 
-CVUIRobotInfoSubscriber::CVUIRobotInfoSubscriber() {
-  // Suscribirse al mensaje 'robot_info'
-  robot_info_sub = nh.subscribe("/robot_info", 1, &CVUIRobotInfoSubscriber::robotInfoCallback, this);
-
-  // Crear la ventana de OpenCV y configurar CVUI
+CVUIRobotGUI::CVUIRobotGUI()
+{
+  // suscribe to the topic robot_info
+  robot_info_sub = nh.subscribe(robot_info_topic_name, 1, &CVUIRobotGUI::robotInfoCallback, this);
+  // publisher for the message cmd_vel
+  twist_pub = nh.advertise<geometry_msgs::Twist>(twist_topic_name, 10);
+  // create the window and configure CVUI
   cv::namedWindow(WINDOW_NAME);
   cvui::init(WINDOW_NAME);
 }
 
-void CVUIRobotInfoSubscriber::run() {
-  while (ros::ok()) {
-    // Crear una matriz OpenCV para mostrar los datos
-    cv::Mat frame = cv::Mat(300, 500, CV_8UC3);
+void CVUIRobotGUI::robotInfoCallback(const robotinfo_msgs::RobotInfo10Fields::ConstPtr &msg)
+{
+  // copy the message to the local variable
+  robot_info_data = *msg;
+}
+
+void CVUIRobotGUI::run()
+{
+  while (ros::ok())
+  {
+    // Clear the frame with a nice color
+    cv::Mat frame = cv::Mat(500, 500, CV_8UC3);
     cv::Scalar bgColor = cv::Scalar(49, 52, 49);
     frame = bgColor;
 
-    // Mostrar los datos en la ventana
+    /*---DISPLAY ROBOT INFO---*/
     cvui::text(frame, 10, 10, "Robot Info:");
 
     cvui::text(frame, 10, 40, "Field 1: " + robot_info_data.data_field_01);
@@ -30,22 +40,72 @@ void CVUIRobotInfoSubscriber::run() {
     cvui::text(frame, 10, 200, "Field 9: " + robot_info_data.data_field_09);
     cvui::text(frame, 10, 220, "Field 10: " + robot_info_data.data_field_10);
 
-    // Actualizar la interfaz CVUI
-    cvui::update();
-
-    // Mostrar la ventana
-    cv::imshow(WINDOW_NAME, frame);
-
-    // Comprobar si se presiona 'q' para salir
-    if (cv::waitKey(20) == 'q') {
-      break;
+    /*---BUTTONS FOR CONTROL THE ROBOT---*/
+    // Show a button at position x = 100, y = 250
+    if (cvui::button(frame, 100, 250, " Forward "))
+    {
+      // The button was clicked, update the Twist message
+      twist_msg.linear.x = twist_msg.linear.x + linear_velocity_step;
+      twist_pub.publish(twist_msg);
     }
+
+    // Show a button at position x = 100, y = 280
+    if (cvui::button(frame, 100, 280, "   Stop  "))
+    {
+      // The button was clicked, update the Twist message
+      twist_msg.linear.x = 0.0;
+      twist_msg.angular.z = 0.0;
+      twist_pub.publish(twist_msg);
+    }
+
+    // Show a button at position x = 30, y = 280
+    if (cvui::button(frame, 30, 280, " Left "))
+    {
+      // The button was clicked, update the Twist message
+      twist_msg.angular.z = twist_msg.angular.z + angular_velocity_step;
+      twist_pub.publish(twist_msg);
+    }
+
+    // Show a button at position x = 195, y = 280
+    if (cvui::button(frame, 195, 280, " Right "))
+    {
+      // The button was clicked, update the Twist message
+      twist_msg.angular.z = twist_msg.angular.z - angular_velocity_step;
+      twist_pub.publish(twist_msg);
+    }
+
+    // Show a button at position x = 100, y = 310
+    if (cvui::button(frame, 100, 310, "Backward"))
+    {
+      // The button was clicked,update the Twist message
+      twist_msg.linear.x = twist_msg.linear.x - linear_velocity_step;
+      twist_pub.publish(twist_msg);
+    }
+
+    // Create window at (320, 250) with size 120x40 (width x height) and title
+    cvui::window(frame, 320, 250, 120, 40, "Linear velocity:");
+    // Show the current velocity inside the window
+    cvui::printf(frame, 345, 275, 0.4, 0xff0000, "%.02f m/sec",
+                 twist_msg.linear.x);
+
+    // Create window at (320 290) with size 120x40 (width x height) and title
+    cvui::window(frame, 320, 290, 120, 40, "Angular velocity:");
+    // Show the current velocity inside the window
+    cvui::printf(frame, 345, 315, 0.4, 0xff0000, "%.02f rad/sec",
+                 twist_msg.angular.z);
+
+    /*---DISPLAY FOR ODOMETRY---*/
+
+    /*---BUTTON FOR CALL THE SERVICE---*/
+
+    // update the interface
+    cvui::update();
+    // show the interface
+    cv::imshow(WINDOW_NAME, frame);
+    // if the user press 'q' or ESC the program ends
+    if (cv::waitKey(30) == 'q' || cv::waitKey(30) == 27)
+      break;
 
     ros::spinOnce();
   }
-}
-
-void CVUIRobotInfoSubscriber::robotInfoCallback(const robotinfo_msgs::RobotInfo10Fields::ConstPtr &msg) {
-  // Copiar el mensaje 'robot_info' a los datos internos
-  robot_info_data = *msg;
 }

@@ -21,7 +21,7 @@ public:
   void run();
 
 private:
-  ros::Publisher twist_pub_;
+  ros::Publisher twist_pub;
   // Create Twist message
   geometry_msgs::Twist twist_msg;
   std::string twist_topic_name;
@@ -34,7 +34,7 @@ CVUIROSCmdVelPublisher::CVUIROSCmdVelPublisher() {
   // Initialize ROS node
   ros::NodeHandle nh;
   twist_topic_name = "cmd_vel";
-  twist_pub_ = nh.advertise<geometry_msgs::Twist>(twist_topic_name, 10);
+  twist_pub = nh.advertise<geometry_msgs::Twist>(twist_topic_name, 10);
 }
 
 void CVUIROSCmdVelPublisher::run() {
@@ -52,7 +52,7 @@ void CVUIROSCmdVelPublisher::run() {
     if (cvui::button(frame, 100, 20, " Forward ")) {
       // The button was clicked, update the Twist message
       twist_msg.linear.x = twist_msg.linear.x + linear_velocity_step;
-      twist_pub_.publish(twist_msg);
+      twist_pub.publish(twist_msg);
     }
 
     // Show a button at position x = 100, y = 50
@@ -60,28 +60,28 @@ void CVUIROSCmdVelPublisher::run() {
       // The button was clicked, update the Twist message
       twist_msg.linear.x = 0.0;
       twist_msg.angular.z = 0.0;
-      twist_pub_.publish(twist_msg);
+      twist_pub.publish(twist_msg);
     }
 
     // Show a button at position x = 30, y = 50
     if (cvui::button(frame, 30, 50, " Left ")) {
       // The button was clicked, update the Twist message
       twist_msg.angular.z = twist_msg.angular.z + angular_velocity_step;
-      twist_pub_.publish(twist_msg);
+      twist_pub.publish(twist_msg);
     }
 
     // Show a button at position x = 195, y = 50
     if (cvui::button(frame, 195, 50, " Right ")) {
       // The button was clicked, update the Twist message
       twist_msg.angular.z = twist_msg.angular.z - angular_velocity_step;
-      twist_pub_.publish(twist_msg);
+      twist_pub.publish(twist_msg);
     }
 
     // Show a button at position x = 100, y = 80
     if (cvui::button(frame, 100, 80, "Backward")) {
       // The button was clicked,update the Twist message
       twist_msg.linear.x = twist_msg.linear.x - linear_velocity_step;
-      twist_pub_.publish(twist_msg);
+      twist_pub.publish(twist_msg);
     }
 
     // Create window at (320, 20) with size 120x40 (width x height) and title
