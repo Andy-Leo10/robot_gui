@@ -8,6 +8,8 @@ CVUIRobotGUI::CVUIRobotGUI()
   twist_pub = nh.advertise<geometry_msgs::Twist>(twist_topic_name, 10);
   // suscribe to the topic odom
   odom_sub = nh.subscribe(odom_topic_name, 1, &CVUIRobotGUI::odomCallback, this);
+  // Create a service client that sends requests of type std_srvs/Trigger
+  service_client = nh.serviceClient<std_srvs::Trigger>(service_name);
   // create the window and configure CVUI
   cv::namedWindow(WINDOW_NAME);
   cvui::init(WINDOW_NAME);
