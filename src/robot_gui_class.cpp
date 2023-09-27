@@ -142,7 +142,7 @@ void CVUIRobotGUI::run()
     {
       distance_travelled = std::stof(last_service_call_msg) - distance_at_reset;
       cvui::printf(frame, 45, 445, 0.4, 0xff0000, "%2f",
-                   distance_travelled.c_str());
+                   distance_travelled);
     }
 
     // Create a button at position x = 300, y = 465
