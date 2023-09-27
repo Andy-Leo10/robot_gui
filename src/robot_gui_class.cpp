@@ -141,7 +141,7 @@ void CVUIRobotGUI::run()
     if (not last_service_call_msg.empty())
     {
       distance_travelled = std::stof(last_service_call_msg) - distance_at_reset;
-      cvui::printf(frame, 45, 445, 0.4, 0xff0000, "%2f",
+      cvui::printf(frame, 45, 445, 0.4, 0xff0000, "%2.2f",
                    distance_travelled);
     }
 
