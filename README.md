@@ -5,26 +5,32 @@ Date: September 2023
 
 ## Description **PENDING**
 
-This package creates a graphical user interface featuring five 
-buttons to make the robot go left, right, forward, backwards or stop.
-When a button a clicked, the GUI displays the current velocity
-and publishes a message of type `Twist` to a predefined ROS topic.
+This package creates a graphical user interface similar to the below image.
+The GUI has 4 sections that are:
+1. Display received messages of robot's info
+2. Control the robot movement by buttons
+3. Tracking the current position of the robot
+4. Request the travelled distance
 
-## Usage **PENDING**
+![](robot_gui/proposed_layout/gui_example.png)
 
-- Clone to your ROS workspace, for instance into `~/catkin_ws/src`  
-- Compile and source: `cd ~/catkin_ws; catkin_make; source devel/setup.bash`  
+## Usage
+
+- Clone to your ROS workspace 
+- Compile and source: 
+`cd ~/catkin_ws; catkin_make; source devel/setup.bash`  
+- Prepare the robot:
+```
+roslaunch mir_gazebo mir_maze_world.launch
+rosservice call /gazebo/unpause_physics
+```
 - Make sure `roscore` is running  
-- Execute: `rosrun cmd_vel_publisher_gui cmd_vel_publisher_gui`  
-
-![](docs/images/cmd_vel_publisher_gui_demo.gif)
-
-## Manual testing **PENDING**
-
-- Use the `rostopic echo` command to display the messages published by the teleoperation buttons:  
-```
-rostopic echo /cmd_vel
-```
+- Execute: 
+```  
+rosrun robot_info agv_robot_info_node
+rosrun distance_tracker_service distance_tracker_service
+rosrun robot_gui robot_gui_node
+``` 
 
 ## License
 - BSD-3-Clause
