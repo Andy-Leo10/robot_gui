@@ -32,7 +32,7 @@ void CVUIRobotGUI::odomCallback(const nav_msgs::Odometry::ConstPtr &msg)
   x_position = msg->pose.pose.position.x;
   y_position = msg->pose.pose.position.y;
   z_position = msg->pose.pose.position.z;
-  //ROS_DEBUG("Position x,y,z: [%0.2f, %0.2f, %0.2f]", x_position, y_position, z_position);
+  // ROS_DEBUG("Position x,y,z: [%0.2f, %0.2f, %0.2f]", x_position, y_position, z_position);
 }
 
 void CVUIRobotGUI::run()
@@ -114,6 +114,32 @@ void CVUIRobotGUI::run()
     cvui::printf(frame, 190, 370, 0.4, 0xff0000, "Z: %.02f", z_position);
 
     /*---BUTTON FOR CALL THE SERVICE---*/
+    // Create window at (40, 20) with size 460x80 (width x height) and title
+    cvui::window(frame, 40, 20, 420, 40, "Service: " + service_name);
+
+    // Call the service
+    if (cvui::button(frame, 45, 80, "Call Service"))
+    {
+      // Send the request and wait for a response
+      if (service_client.call(srv_req))
+      {
+        // Print the response message and return true
+        ROS_DEBUG("Response message: %s", srv_req.response.message.c_str());
+        // set latest service call status
+        last_service_call_msg = srv_req.response.message;
+      }
+      else
+      {
+        last_service_call_msg = "Service call failed.";
+      }
+    }
+
+    // Display the last response inside the window
+    if (not last_service_call_msg.empty())
+    {
+      cvui::printf(frame, 45, 45, 0.4, 0xff0000, "%s",
+                   last_service_call_msg.c_str());
+    }
 
     // update the interface
     cvui::update();
