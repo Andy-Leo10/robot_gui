@@ -115,10 +115,10 @@ void CVUIRobotGUI::run()
 
     /*---BUTTON FOR CALL THE SERVICE---*/
     // Create window at (40, 20) with size 460x80 (width x height) and title
-    cvui::window(frame, 40, 20, 420, 40, "Service: " + service_name);
+    cvui::window(frame, 40, 420, 420, 40, "Service: " + service_name);
 
     // Call the service
-    if (cvui::button(frame, 45, 80, "Call Service"))
+    if (cvui::button(frame, 45, 465, "Call Service"))
     {
       // Send the request and wait for a response
       if (service_client.call(srv_req))
@@ -137,7 +137,7 @@ void CVUIRobotGUI::run()
     // Display the last response inside the window
     if (not last_service_call_msg.empty())
     {
-      cvui::printf(frame, 45, 45, 0.4, 0xff0000, "%s",
+      cvui::printf(frame, 45, 410, 0.4, 0xff0000, "%s",
                    last_service_call_msg.c_str());
     }
 
