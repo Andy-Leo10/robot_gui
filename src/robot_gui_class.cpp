@@ -6,15 +6,33 @@ CVUIRobotGUI::CVUIRobotGUI()
   robot_info_sub = nh.subscribe(robot_info_topic_name, 1, &CVUIRobotGUI::robotInfoCallback, this);
   // publisher for the message cmd_vel
   twist_pub = nh.advertise<geometry_msgs::Twist>(twist_topic_name, 10);
+  // suscribe to the topic odom
+  odom_sub = nh.subscribe(odom_topic_name, 1, &CVUIRobotGUI::odomCallback, this);
   // create the window and configure CVUI
   cv::namedWindow(WINDOW_NAME);
   cvui::init(WINDOW_NAME);
+  // enable ROS DEBUG messages
+  if (ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME,
+                                     ros::console::levels::Debug))
+  {
+    ros::console::notifyLoggerLevelsChanged();
+  }
 }
 
 void CVUIRobotGUI::robotInfoCallback(const robotinfo_msgs::RobotInfo10Fields::ConstPtr &msg)
 {
   // copy the message to the local variable
   robot_info_data = *msg;
+}
+
+void CVUIRobotGUI::odomCallback(const nav_msgs::Odometry::ConstPtr &msg)
+{
+  // copy the message to the local variable
+  odom_data = *msg;
+  x_position = msg->pose.pose.position.x;
+  y_position = msg->pose.pose.position.y;
+  z_position = msg->pose.pose.position.z;
+  ROS_DEBUG("Position x,y,z: [%0.2f, %0.2f, %0.2f]", x_position, y_position, z_position);
 }
 
 void CVUIRobotGUI::run()
@@ -46,7 +64,6 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked, update the Twist message
       twist_msg.linear.x = twist_msg.linear.x + linear_velocity_step;
-
     }
 
     // Show a button at position x = 100, y = 280
@@ -55,7 +72,6 @@ void CVUIRobotGUI::run()
       // The button was clicked, update the Twist message
       twist_msg.linear.x = 0.0;
       twist_msg.angular.z = 0.0;
-
     }
 
     // Show a button at position x = 30, y = 280
@@ -63,7 +79,6 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked, update the Twist message
       twist_msg.angular.z = twist_msg.angular.z + angular_velocity_step;
-
     }
 
     // Show a button at position x = 195, y = 280
@@ -71,7 +86,6 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked, update the Twist message
       twist_msg.angular.z = twist_msg.angular.z - angular_velocity_step;
-
     }
 
     // Show a button at position x = 100, y = 310
@@ -79,7 +93,6 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked,update the Twist message
       twist_msg.linear.x = twist_msg.linear.x - linear_velocity_step;
-
     }
     twist_pub.publish(twist_msg);
     // Create window at (320, 250) with size 120x40 (width x height) and title
@@ -95,7 +108,11 @@ void CVUIRobotGUI::run()
                  twist_msg.angular.z);
 
     /*---DISPLAY FOR ODOMETRY---*/
-
+    cvui::text(frame, 10, 350, "Estimated robot position:");
+    cvui::text(frame, 10, 370, "x: " + std::to_string(x_position));
+    cvui::text(frame, 10, 390, "y: " + std::to_string(y_position));
+    cvui::text(frame, 10, 410, "z: " + std::to_string(z_position));
+    
     /*---BUTTON FOR CALL THE SERVICE---*/
 
     // update the interface

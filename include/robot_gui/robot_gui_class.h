@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Twist.h>
+#include "nav_msgs/Odometry.h"
 #include <vector>
 
 class CVUIRobotGUI
@@ -30,8 +31,17 @@ private:
   std::string twist_topic_name = "cmd_vel";
   float linear_velocity_step = 0.1;
   float angular_velocity_step = 0.1;
+  // suscriber for odom
+  ros::Subscriber odom_sub;
+  nav_msgs::Odometry odom_data;
+  std::string odom_topic_name = "/odom";
+  float x_position = 0.0;
+  float y_position = 0.0;
+  float z_position = 0.0;
 
+  // callback functions
   void robotInfoCallback(const robotinfo_msgs::RobotInfo10Fields::ConstPtr &msg);
+  void odomCallback(const nav_msgs::Odometry::ConstPtr &msg);
 };
 
 #endif // ROBOT_GUI_CLASS_H
