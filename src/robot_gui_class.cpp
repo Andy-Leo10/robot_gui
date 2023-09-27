@@ -151,6 +151,8 @@ void CVUIRobotGUI::run()
     }
     else
     {
+      //reshape the image to fit half the window width
+      cv::resize(img, img, cv::Size(250, 250));
       cvui::image(frame, 300, 10, img);
     }
 
