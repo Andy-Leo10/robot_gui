@@ -143,6 +143,22 @@ void CVUIRobotGUI::run()
                    last_service_call_msg.c_str());
     }
 
+    // Create a button at position x = 300, y = 465
+    if (cvui::button(frame, 300, 465, "Reset Service"))
+    {
+      // Reset the service value
+      srv_req.request.reset = true;
+      // Call the service again
+      if (service_client.call(srv_req))
+      {
+        // Print the response message and return true
+        last_service_call_msg = srv_req.response.message;
+      }
+      else
+      {
+        last_service_call_msg = "Service call failed.";
+      }
+    }
 
     // UPDATE the interface
     cvui::update();
