@@ -126,7 +126,7 @@ void CVUIRobotGUI::run()
       if (service_client.call(srv_req))
       {
         // Print the response message and return true
-        //ROS_DEBUG("Response message: %s", srv_req.response.message.c_str());
+        // ROS_DEBUG("Response message: %s", srv_req.response.message.c_str());
         // set latest service call status
         last_service_call_msg = srv_req.response.message;
       }
@@ -144,8 +144,15 @@ void CVUIRobotGUI::run()
     }
 
     // plot inside the main window a picture
-    cv::Mat img = cv::imread("../proposed_layout/gui_example.png");
-    cvui::image(frame, 300, 10, img);
+    cv::Mat img = cv::imread("/home/user/catkin_ws/src/robot_gui/proposed_layout/gui_example.png");
+    if (img.empty())
+    {
+      ROS_ERROR("Couldn't load the image.");
+    }
+    else
+    {
+      cvui::image(frame, 300, 10, img);
+    }
 
     // update the interface
     cvui::update();
