@@ -46,7 +46,7 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked, update the Twist message
       twist_msg.linear.x = twist_msg.linear.x + linear_velocity_step;
-      twist_pub.publish(twist_msg);
+
     }
 
     // Show a button at position x = 100, y = 280
@@ -55,7 +55,7 @@ void CVUIRobotGUI::run()
       // The button was clicked, update the Twist message
       twist_msg.linear.x = 0.0;
       twist_msg.angular.z = 0.0;
-      twist_pub.publish(twist_msg);
+
     }
 
     // Show a button at position x = 30, y = 280
@@ -63,7 +63,7 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked, update the Twist message
       twist_msg.angular.z = twist_msg.angular.z + angular_velocity_step;
-      twist_pub.publish(twist_msg);
+
     }
 
     // Show a button at position x = 195, y = 280
@@ -71,7 +71,7 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked, update the Twist message
       twist_msg.angular.z = twist_msg.angular.z - angular_velocity_step;
-      twist_pub.publish(twist_msg);
+
     }
 
     // Show a button at position x = 100, y = 310
@@ -79,9 +79,9 @@ void CVUIRobotGUI::run()
     {
       // The button was clicked,update the Twist message
       twist_msg.linear.x = twist_msg.linear.x - linear_velocity_step;
-      twist_pub.publish(twist_msg);
-    }
 
+    }
+    twist_pub.publish(twist_msg);
     // Create window at (320, 250) with size 120x40 (width x height) and title
     cvui::window(frame, 320, 250, 120, 40, "Linear velocity:");
     // Show the current velocity inside the window
