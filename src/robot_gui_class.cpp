@@ -127,6 +127,7 @@ void CVUIRobotGUI::run()
         ROS_DEBUG("Response message: %s", srv_req.response.message.c_str());
         // set latest service call status
         last_service_call_msg = srv_req.response.message;
+        std::cout << "service call" << last_service_call_msg << std::endl;
       }
       else
       {
@@ -137,7 +138,7 @@ void CVUIRobotGUI::run()
     // Display the last response inside the window
     if (not last_service_call_msg.empty())
     {
-      cvui::printf(frame, 45, 410, 0.4, 0xff0000, "%s",
+      cvui::printf(frame, 45, 430, 0.4, 0xff0000, "%s",
                    last_service_call_msg.c_str());
     }
 
