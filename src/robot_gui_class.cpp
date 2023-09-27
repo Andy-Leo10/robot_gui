@@ -109,10 +109,10 @@ void CVUIRobotGUI::run()
 
     /*---DISPLAY FOR ODOMETRY---*/
     cvui::text(frame, 10, 350, "Estimated robot position:");
-    cvui::text(frame, 10, 370, "x: " + std::to_string(x_position));
-    cvui::text(frame, 10, 390, "y: " + std::to_string(y_position));
-    cvui::text(frame, 10, 410, "z: " + std::to_string(z_position));
-    
+    cvui::printf(frame, 10, 370, 0.4, 0xff0000, "X: %.02f", x_position);
+    cvui::printf(frame, 100, 370, 0.4, 0xff0000, "Y: %.02f", y_position);
+    cvui::printf(frame, 190, 470, 0.4, 0xff0000, "Z: %.02f", z_position);
+
     /*---BUTTON FOR CALL THE SERVICE---*/
 
     // update the interface
