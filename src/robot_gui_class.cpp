@@ -138,7 +138,7 @@ void CVUIRobotGUI::run()
     // Display the last response inside the window
     if (not last_service_call_msg.empty())
     {
-      cvui::printf(frame, 45, 430, 0.4, 0xff0000, "%s",
+      cvui::printf(frame, 45, 440, 0.4, 0xff0000, "%s",
                    last_service_call_msg.c_str());
     }
 
