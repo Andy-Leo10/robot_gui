@@ -32,7 +32,7 @@ void CVUIRobotGUI::odomCallback(const nav_msgs::Odometry::ConstPtr &msg)
   x_position = msg->pose.pose.position.x;
   y_position = msg->pose.pose.position.y;
   z_position = msg->pose.pose.position.z;
-  ROS_DEBUG("Position x,y,z: [%0.2f, %0.2f, %0.2f]", x_position, y_position, z_position);
+  //ROS_DEBUG("Position x,y,z: [%0.2f, %0.2f, %0.2f]", x_position, y_position, z_position);
 }
 
 void CVUIRobotGUI::run()
@@ -111,7 +111,7 @@ void CVUIRobotGUI::run()
     cvui::text(frame, 10, 350, "Estimated robot position:");
     cvui::printf(frame, 10, 370, 0.4, 0xff0000, "X: %.02f", x_position);
     cvui::printf(frame, 100, 370, 0.4, 0xff0000, "Y: %.02f", y_position);
-    cvui::printf(frame, 190, 470, 0.4, 0xff0000, "Z: %.02f", z_position);
+    cvui::printf(frame, 190, 370, 0.4, 0xff0000, "Z: %.02f", z_position);
 
     /*---BUTTON FOR CALL THE SERVICE---*/
 
