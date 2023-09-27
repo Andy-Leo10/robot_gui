@@ -39,6 +39,7 @@ void CVUIRobotGUI::odomCallback(const nav_msgs::Odometry::ConstPtr &msg)
 
 void CVUIRobotGUI::run()
 {
+  float distance_travelled = 0.0;
   while (ros::ok())
   {
     // Clear the frame with a nice color
@@ -139,25 +140,16 @@ void CVUIRobotGUI::run()
     // Display the last response inside the window
     if (not last_service_call_msg.empty())
     {
+      distance_travelled = std::stof(last_service_call_msg) - distance_at_reset;
       cvui::printf(frame, 45, 445, 0.4, 0xff0000, "%s",
-                   last_service_call_msg.c_str());
+                   distance_travelled.c_str());
     }
 
     // Create a button at position x = 300, y = 465
-    if (cvui::button(frame, 300, 465, "Reset Service"))
+    if (cvui::button(frame, 300, 465, "Reset Tracking Value"))
     {
-      // Reset the service value
-      srv_req.request.reset = true;
-      // Call the service again
-      if (service_client.call(srv_req))
-      {
-        // Print the response message and return true
-        last_service_call_msg = srv_req.response.message;
-      }
-      else
-      {
-        last_service_call_msg = "Service call failed.";
-      }
+      //convert to float the string and store it 
+      distance_at_reset = std::stof(last_service_call_msg);
     }
 
     // UPDATE the interface

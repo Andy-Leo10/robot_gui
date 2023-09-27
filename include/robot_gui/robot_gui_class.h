@@ -45,6 +45,7 @@ private:
   std_srvs::Trigger srv_req;
   std::string service_name = "/get_distance";
   std::string last_service_call_msg;
+  float distance_at_reset = 0.0;
 
   // callback functions
   void robotInfoCallback(const robotinfo_msgs::RobotInfo10Fields::ConstPtr &msg);
