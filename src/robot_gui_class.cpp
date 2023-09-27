@@ -143,22 +143,10 @@ void CVUIRobotGUI::run()
                    last_service_call_msg.c_str());
     }
 
-    // plot inside the main window a picture
-    cv::Mat img = cv::imread("/home/user/catkin_ws/src/robot_gui/proposed_layout/gui_example.png");
-    if (img.empty())
-    {
-      ROS_ERROR("Couldn't load the image.");
-    }
-    else
-    {
-      //reshape the image to fit half the window width
-      cv::resize(img, img, cv::Size(250, 250));
-      cvui::image(frame, 300, 10, img);
-    }
 
-    // update the interface
+    // UPDATE the interface
     cvui::update();
-    // show the interface
+    // SHOW the interface
     cv::imshow(WINDOW_NAME, frame);
     // if the user press 'q' or ESC the program ends
     if (cv::waitKey(30) == 'q' || cv::waitKey(30) == 27)
