@@ -126,10 +126,9 @@ void CVUIRobotGUI::run()
       if (service_client.call(srv_req))
       {
         // Print the response message and return true
-        ROS_DEBUG("Response message: %s", srv_req.response.message.c_str());
+        //ROS_DEBUG("Response message: %s", srv_req.response.message.c_str());
         // set latest service call status
         last_service_call_msg = srv_req.response.message;
-        std::cout << "service call" << last_service_call_msg << std::endl;
       }
       else
       {
@@ -140,9 +139,13 @@ void CVUIRobotGUI::run()
     // Display the last response inside the window
     if (not last_service_call_msg.empty())
     {
-      cvui::printf(frame, 45, 440, 0.4, 0xff0000, "%s",
+      cvui::printf(frame, 45, 450, 0.4, 0xff0000, "%s",
                    last_service_call_msg.c_str());
     }
+
+    // plot inside the main window a picture
+    cv::Mat img = cv::imread("../proposed_layout/gui_example.png");
+    cvui::image(frame, 300, 10, img);
 
     // update the interface
     cvui::update();
